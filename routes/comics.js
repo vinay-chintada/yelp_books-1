@@ -62,6 +62,21 @@ router.get("/search", async (req,res) => {
 		res.send("you broke in comics  search");
 	}
 })
+router.get("/genre/:genre", async (req,res) => {
+	try{const validGenres =["action","sci-fi","shonen","manga","donghua","supernatrual","fantasy","slice-of-life","comedy","romance" ]
+	if(validGenres.includes(req.params.genre.toLowerCase())){
+		const books = await Book.find({genre:req.params.genre}).exec();
+		res.render("books",{books});
+		}
+	else{
+		res.send("enter valid genre");
+		}
+		
+	}catch(e){
+		console.log(e);
+		res.send("you broke in genre route");
+	}
+} )
 //Show
 router.get("/:id",async (req,res) => { 
 	try{
