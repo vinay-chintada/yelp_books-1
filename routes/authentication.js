@@ -25,9 +25,11 @@ router.post('/signup', async (req,res) => {
 		res.send(err);
 	}
 })
+//login show form
 router.get('/login',(req,res) => {
 	res.render('login');
 });
+// login 
 router.post('/login',passport.authenticate('local',{
 		successRedirect:'/comics',
 		failureRedirect:'/login'
