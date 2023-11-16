@@ -38,10 +38,12 @@ router.post("/", isloggedin, async (req,res) => {
 	try{
 		const book = await Book.create(newBook);
 		console.log(book);
+		req.flash("success","comic created");
 		res.redirect("/comics/"+ book._id );
 	}catch(err){
 		console.log(err);
-		res.send("you broke in comics put");
+		req.flash("error","error in creating comic");
+		res.redirect("/comics");
 	}
 	
 })
@@ -90,6 +92,7 @@ router.get("/:id",async (req,res) => {
 // Edit
 router.get("/:id/edit",CheckBookOwner, async (req,res) => {
 	const book = await Book.findById(req.params.id).exec();
+	req.flash("success","comic edited successsfully!");
 	 res.render("comics_edit",{book})
 })
 //update
@@ -100,7 +103,7 @@ router.put("/:id/", CheckBookOwner, async (req,res) => {
 		description:req.body.description,
 		author:req.body.author,
 		publisher:req.body.publisher,
-		date:req.body.date,
+		date:req.body.date, 
 		genre,
 		series:req.body.series,
 		issue:req.body.issue,
@@ -111,10 +114,12 @@ router.put("/:id/", CheckBookOwner, async (req,res) => {
 	try{
 		const book = await Book.findByIdAndUpdate(req.params.id , newBook ,{new: true}) .exec();
 		console.log(book);
+	    req.flash("success","updated the comic");
 		res.redirect(`/comics/${req.params.id}`);
 	}catch(err){
 		console.log(err);
-		res.send("you broke it in /comics/id show");
+		req.flash("error","failed to update the comic");
+		res.redirect("/comics");
 	}
 })
 //Delete
@@ -122,10 +127,12 @@ router.delete("/:id", CheckBookOwner, async (req,res) => {
 	try {
 		const delbook = await Book.findByIdAndDelete(req.params.id).exec();
 		console.log(delbook);
+		req.flash("success","deleted the comic");
 		res.redirect("/comics");
 	}catch(err){
 		console.log(err);
-		res.send("you broke it in /delete")
+		req.flash("error","failed to deleted the comic");
+		res.redirect("/comics");
 	}
 }) 
 

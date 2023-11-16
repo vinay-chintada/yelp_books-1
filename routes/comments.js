@@ -21,11 +21,12 @@ router.post("/", isloggedin, async (req,res) => {
 			text:req.body.text,
 			Bookid:req.body.Bookid
 			});
-		console.log(comment);
+		req.flash("success","comment created!");
 		res.redirect(`/comics/${req.body.Bookid}`)
 	}catch(err){
-		console.log(err)
-		res.send("you broke.. in the comment post");
+		console.log(err);
+		req.flash("error","failed to create comment");
+		res.redirect("/comics");
 	}
 })
 //comment edit
@@ -33,23 +34,25 @@ router.get("/:commentid/edit",CheckCommentOwner, async(req,res) =>{
 	try{
 		const book=await Book.findById(req.params.id).exec();
 		const comment =  await Comment.findById(req.params.commentid).exec();
-		console.log("book:",book);
-		console.log("comment:",comment);
+		req.flash("success","edited comment successfully");
 		res.render("comments_edit",{book,comment});
 		
 	}catch(err){
-		console.log(err);;
+		console.log(err);
+		req.flash("error","failed to edit comment");
+		res.redirect("/comics");
 	}
 })
 //update comment
 router.put("/:commentid", CheckCommentOwner, async (req,res) => {
 	try{
 	    const comment = await Comment.findByIdAndUpdate(req.params.commentid, {text: req.body.text}, {new:true});
-		console.log(comment);
+		req.flash("success","comment updated!");
 		res.redirect(`/comics/${req.params.id}`);
 	}catch(err){
 		console.log(err);
-		res.send("you broke in the comment update put")
+		req.flash("error","failed to update comment");
+		res.redirect("/comics");
 	}
 })
 //delete comment
@@ -57,10 +60,12 @@ router.delete("/:commentid", CheckCommentOwner, async (req,res) => {
 	try{
 		const comment = await Comment.findByIdAndDelete(req.params.commentid);
 		console.log(comment);
+		req.flash("success","comment deleted!");
 		res.redirect(`/comics/${req.params.id}`);
 	}catch(err){
 		console.log(err);
-		res.send("broken in delete comment")
+		req.flash("error","failed to delete comment");
+		res.redirect("/comics");
 	}
 })
 
