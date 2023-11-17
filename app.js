@@ -59,12 +59,16 @@ try{
 //  Express config
 app.set("view engine","ejs");
 app.use(express.static("public"));
+app.use(express.json({
+	type : ["application/json","text/plain"]
+}));
 // express session
 app.use(expressSession({
 	secret: process.env.ES_SECRET || config.expressSession.secret,
 	resave: false,
 	saveUnintialized: false
 }));
+
 
 // Body Parser config
 app.use(bodyParser.urlencoded({extended:true}));

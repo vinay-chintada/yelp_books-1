@@ -33,7 +33,9 @@ router.post("/", isloggedin, async (req,res) => {
 		owner: {
 			id:req.user._id,
 			username:req.user.username
-		}
+		},
+		upvotes:[req.user.username],
+		downvotes:[]
 	}
 	try{
 		const book = await Book.create(newBook);
@@ -76,7 +78,14 @@ router.get("/genre/:genre", async (req,res) => {
 		}
 		
 	
-})
+});
+//vote
+router.post("/vote",isloggedin,(req,res) => {
+	console.log(req.user,req.body);
+	res.json({
+		message:"Voted!"
+	});
+});
 //Show
 router.get("/:id",async (req,res) => { 
 	try{

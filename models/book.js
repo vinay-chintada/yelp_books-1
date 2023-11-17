@@ -17,7 +17,9 @@ const bookschema = new mongoose.Schema({
 			ref: "User"
 		},
 		username : String
-	}
+	},
+	upvotes:[String],
+	downvotes:[String]
 });
  bookschema.index({
 	 '$**':'text'
