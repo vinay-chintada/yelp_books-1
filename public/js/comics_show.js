@@ -6,18 +6,24 @@ const upvoteBtn = document.getElementById("upvote-btn");
 const downvoteBtn = document.getElementById("downvote-btn");
 
 //======================
-//ADD EVENT LISTENERS
+//HELPER FUNCTION
 //======================
-upvoteBtn.addEventListener( "click" , async function() {
-//build fetch options
+const sendVote = async(voteType) => {
+	//build fetch options
  const options = {
 	 method:"POST",
 	 headers:{
 		 'Content-Type':'application/json'
-	 },
-	 body: JSON.stringify({vote: 'up'})
+	 }
  }
-//send fetch request
+ if(voteType === 'up'){
+	 options.body = JSON.stringify({vote:"up"});
+ }else if(voteType === 'down'){
+	 options.body = JSON.stringify({vote:"down"});
+ }else {
+	 throw "voteTypw must be 'up' or 'down'"
+ }
+	//send fetch request
  await fetch("/comics/vote",options)
 	.then(data => {
 	 return data.json()
@@ -28,4 +34,19 @@ upvoteBtn.addEventListener( "click" , async function() {
 	.catch(err => {
 	 console.log(err)
      })
+}
+
+
+
+
+
+//======================
+//ADD EVENT LISTENERS
+//======================
+upvoteBtn.addEventListener( "click" , async function() {
+sendVote('up');
+});
+
+downvoteBtn.addEventListener( "click" , async function() {
+sendVote('down');
 });
