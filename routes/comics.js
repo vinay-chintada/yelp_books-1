@@ -80,11 +80,11 @@ router.get("/genre/:genre", async (req,res) => {
 	
 });
 //vote
-router.post("/vote",isloggedin,(req,res) => {
-	console.log(req.user,req.body);
-	res.json({
-		message:"Voted!"
-	});
+router.post("/vote",isloggedin,async (req,res) => {
+	console.log("reqbody:",req.user,req.body);
+	const book = await Book.findById(req.body.Bookid)
+	console.log(book);
+	res.json(book);
 });
 //Show
 router.get("/:id",async (req,res) => { 
