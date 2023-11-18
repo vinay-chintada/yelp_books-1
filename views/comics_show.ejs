@@ -64,9 +64,18 @@
 			<button type="button" class="btn btn-success  btn-lg mb-4">Add Comment</button>
 		</a>
 		<div class = "col-3 ">
+			<%if(user && book.upvotes.indexOf(user.username)>=0){ %>
+			<button id="upvote-btn" class = "btn btn-success btn-lg mb-4">+</button>
+			<% } else if(user){%>
 			<button id="upvote-btn" class = "btn btn-outline-success btn-lg mb-4">+</button>
-			<span id="score" class="mx-2 text-center"> 10</span>
+			<% }%>
+			<span id="score" class="mx-2 text-center"> <%= book.upvotes.length - book.downvotes.length %></span>
+			<%if(user && book.downvotes.indexOf(user.username)>=0){ %>
+			<button id="downvote-btn" class = "btn btn-danger btn-lg mb-4">-</button>
+			<% } else if(user){%>
 			<button id="downvote-btn" class = "btn btn-outline-danger btn-lg mb-4">-</button>
+			<% }%>
+			
 		</div>
 		
 	</div>
